@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="CGLA">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="GL">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="GLGraphics">
+      <UniqueIdentifier>{0650b244-07dd-462b-ad06-fa760afe4383}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{2f5f8112-e014-4ab4-b905-2b0abcce3744}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGLA\ArithMatFloat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithQuat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMat2x2Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMat3x3Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMat4x4Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithSqMatFloat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec2Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec3Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec3Int.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec4Float.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVec4Int.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVecFloat.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ArithVecInt.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\BitMask.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\CGLA.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\eigensolution.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\ExceptionStandard.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x2d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x2f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x3d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat2x3f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat3x3d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat3x3f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat4x4d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Mat4x4f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Quatd.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Quaternion.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Quatf.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\statistics.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\TableTrigonometry.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\UnitVector.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2i.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec2ui.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3Hf.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3i.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3uc.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec3usi.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4d.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4f.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4i.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="CGLA\Vec4uc.h">
+      <Filter>CGLA</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\freeglut.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\freeglut_ext.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\freeglut_std.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glew.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glut.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\glxew.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\wglew.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\gel_gl.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\gel_glu.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\gel_glut.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\glsl_shader.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\GLViewController.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\image_DXT.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\image_helper.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\QuatTrackBall.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\SimpleTrackBall.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\SinglePassWireframeRenderer.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\SOIL.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\stb_image.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\stb_image_write.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\stbi_DDS_aug.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GLGraphics\stbi_DDS_aug_c.h">
+      <Filter>GLGraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\ArgExtracter.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Grid2D.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\HashKey.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\HashTable.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Parse.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\ResourceManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\string_utils.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Timer.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\XmlParser.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CGLA\ArithSqMat3x3Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithSqMat4x4Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithVec2Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\ArithVec3Float.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\eigensolution.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\gel_rand.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat3x3d.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat3x3f.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat4x4d.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Mat4x4f.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\statistics.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\TableTrigonometry.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Vec2i.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Vec3f.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="CGLA\Vec3i.cpp">
+      <Filter>CGLA</Filter>
+    </ClCompile>
+    <ClCompile Include="GL\glew.c">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\glsl_shader.cpp">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\GLViewController.cpp">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\image_DXT.c">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\image_helper.c">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\QuatTrackBall.cpp">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\SimpleTrackBall.cpp">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\SinglePassWireframeRenderer.cpp">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\SOIL.c">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\stb_image.c">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GLGraphics\stb_image_write.c">
+      <Filter>GLGraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\HashKey.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Parse.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\string_utils.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\XmlParser.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

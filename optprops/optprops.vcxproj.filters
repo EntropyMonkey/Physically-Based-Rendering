@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generators">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="LorenzMie">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Loaders">
+      <UniqueIdentifier>{a266f516-fe7d-4dcf-a309-1b7174978204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Properties">
+      <UniqueIdentifier>{429d17d6-e674-497d-b536-820f4a0609bc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="glass.cpp">
+      <Filter>Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="incandescent.cpp">
+      <Filter>Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="milk.cpp">
+      <Filter>Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="water.cpp">
+      <Filter>Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="LorenzMie.cpp">
+      <Filter>LorenzMie</Filter>
+    </ClCompile>
+    <ClCompile Include="load_mpml.cpp">
+      <Filter>Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Medium.cpp">
+      <Filter>Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="sun.cpp">
+      <Filter>Generators</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="glass.h">
+      <Filter>Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="incandescent.h">
+      <Filter>Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="milk.h">
+      <Filter>Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="water.h">
+      <Filter>Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="LorenzMie.h">
+      <Filter>LorenzMie</Filter>
+    </ClInclude>
+    <ClInclude Include="load_mpml.h">
+      <Filter>Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Medium.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="spectrum2rgb.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="spectrum2xyz.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="sun.h">
+      <Filter>Generators</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

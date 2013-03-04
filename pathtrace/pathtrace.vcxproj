@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E92262B2-DBD4-45CC-8665-BC8D475B449A}</ProjectGuid>
+    <RootNamespace>pathtrace</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\GEL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <OpenMPSupport>false</OpenMPSupport>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>optprops.lib;GEL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>..\GEL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <OpenMPSupport>true</OpenMPSupport>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>optprops.lib;GEL.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Accelerator.h" />
+    <ClInclude Include="AccObj.h" />
+    <ClInclude Include="BspTree.h" />
+    <ClInclude Include="cdf_bsearch.h" />
+    <ClInclude Include="fresnel.h" />
+    <ClInclude Include="ImageCompare.h" />
+    <ClInclude Include="IndexedFaceSet.h" />
+    <ClInclude Include="luminance.h" />
+    <ClInclude Include="Object3D.h" />
+    <ClInclude Include="ObjMaterial.h" />
+    <ClInclude Include="obj_load.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="PositionSample.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="RenderEngine.h" />
+    <ClInclude Include="SunSky.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="AABB.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Ambient.h" />
+    <ClInclude Include="Emission.h" />
+    <ClInclude Include="Glossy.h" />
+    <ClInclude Include="Lambertian.h" />
+    <ClInclude Include="Metal.h" />
+    <ClInclude Include="Mirror.h" />
+    <ClInclude Include="Reflectance.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Textured.h" />
+    <ClInclude Include="Transparent.h" />
+    <ClInclude Include="TriMesh.h" />
+    <ClInclude Include="Volume.h" />
+    <ClInclude Include="ParticleTracer.h" />
+    <ClInclude Include="PathTracer.h" />
+    <ClInclude Include="RayCaster.h" />
+    <ClInclude Include="RayTracer.h" />
+    <ClInclude Include="Tracer.h" />
+    <ClInclude Include="AreaLight.h" />
+    <ClInclude Include="Directional.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="mt_random.h" />
+    <ClInclude Include="Randomizer.h" />
+    <ClInclude Include="sampler.h" />
+    <ClInclude Include="MCGlossy.h" />
+    <ClInclude Include="MCLambertian.h" />
+    <ClInclude Include="MCSubsurf.h" />
+    <ClInclude Include="MCVolume.h" />
+    <ClInclude Include="PhotonMap.h" />
+    <ClInclude Include="PhotonCaustics.h" />
+    <ClInclude Include="PhotonLambertian.h" />
+    <ClInclude Include="legendre.h" />
+    <ClInclude Include="RadianceTransfer.h" />
+    <ClInclude Include="HDRTexture.h" />
+    <ClInclude Include="SphereTexture.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Gamma.h" />
+    <ClInclude Include="ToneMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="Accelerator.cpp" />
+    <ClCompile Include="BspTree.cpp" />
+    <ClCompile Include="ImageCompare.cpp" />
+    <ClCompile Include="obj_load.cpp" />
+    <ClCompile Include="RenderEngine.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Ambient.cpp" />
+    <ClCompile Include="Glossy.cpp" />
+    <ClCompile Include="Lambertian.cpp" />
+    <ClCompile Include="Metal.cpp" />
+    <ClCompile Include="Mirror.cpp" />
+    <ClCompile Include="SunSky.cpp" />
+    <ClCompile Include="Textured.cpp" />
+    <ClCompile Include="Transparent.cpp" />
+    <ClCompile Include="TriMesh.cpp" />
+    <ClCompile Include="Volume.cpp" />
+    <ClCompile Include="ParticleTracer.cpp" />
+    <ClCompile Include="PathTracer.cpp" />
+    <ClCompile Include="RayCaster.cpp" />
+    <ClCompile Include="RayTracer.cpp" />
+    <ClCompile Include="AreaLight.cpp" />
+    <ClCompile Include="Directional.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="Randomizer.cpp" />
+    <ClCompile Include="MCGlossy.cpp" />
+    <ClCompile Include="MCLambertian.cpp" />
+    <ClCompile Include="MCSubsurf.cpp" />
+    <ClCompile Include="MCVolume.cpp" />
+    <ClCompile Include="PhotonCaustics.cpp" />
+    <ClCompile Include="PhotonLambertian.cpp" />
+    <ClCompile Include="legendre.cpp" />
+    <ClCompile Include="RadianceTransfer.cpp" />
+    <ClCompile Include="HDRTexture.cpp" />
+    <ClCompile Include="SphereTexture.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Gamma.cpp" />
+    <ClCompile Include="pathtrace.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\optprops\optprops.vcxproj">
+      <Project>{5bb75de0-c159-481a-a549-212353d2578f}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

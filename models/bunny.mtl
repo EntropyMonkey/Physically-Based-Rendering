@@ -1,0 +1,12 @@
+newmtl white
+Ka 0.0 0.0 0.0
+Kd 0.9 0.9 0.9
+Ks 0.0 0.0 0.0
+illum 0
+
+newmtl silver
+Ka 0.0 0.0 0.0
+Kd 0.0 0.0 0.0
+Ks 0.96 0.98 0.96
+Ni 0.177
+illum 11

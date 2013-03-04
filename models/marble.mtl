@@ -1,0 +1,6 @@
+newmtl marble
+Ka 0.0 0.0 0.0
+Kd 0.6 0.6 0.45
+Ks 0.2 0.1 0.1
+Ni 1.5
+illum 13

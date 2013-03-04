@@ -1,0 +1,35 @@
+newmtl glass_to_MerlotWine
+Ka 0.000000 0.000000 0.000000
+Kd 0.480000 0.000000 0.000000
+Ks 0.450000 0.450000 0.450000
+Ni 1.130749
+illum 12
+
+newmtl glass_to_LowFatChocolateMilk
+Ka 0.000000 0.000000 0.000000
+Kd 0.480000 0.000000 0.000000
+Ks 0.450000 0.450000 0.450000
+Ni 1.130749
+illum 13
+
+newmtl MerlotWine
+Ka  0.0 0.0 0.0
+Kd  0.6 0.0 0.0
+Ks  0.9 0.9 0.9
+Ni  1.34
+illum 12
+
+newmtl LowFatChocolateMilk
+Ns 100.0
+Ka 0.0 0.0 0.0
+Kd 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ni 1.335
+illum 13
+
+newmtl glass
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+Ni  1.5
+illum 4

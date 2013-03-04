@@ -1,0 +1,23 @@
+newmtl blinn1SG
+Ka 0.0 0.0 0.0
+Kd 0.0 0.0 0.0
+Ks 0.98 0.98 0.98
+Ni 1.5
+Ns 50.0
+illum 2
+
+newmtl blinn2SG
+Ka 0.0 0.0 0.0
+Kd 0.9 0.9 0.7
+Ks 0.08 0.08 0.08
+Ns 200.0
+Ni 1.5
+illum 1
+
+newmtl blinn3SG
+Ka 0.0 0.0 0.0
+Kd 0.4 0.4 0.5
+Ks 0.0 0.0 0.0
+Tf 1.0 1.0 1.0
+Ni 1.5
+illum 1

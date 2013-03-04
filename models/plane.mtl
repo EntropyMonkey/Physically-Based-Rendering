@@ -1,0 +1,20 @@
+newmtl white
+Ka 0.0 0.0 0.0
+Kd 0.95 0.95 0.95
+Ks 0.0 0.0 0.0
+illum 1
+#map_Kd wood-tiled.jpg
+
+newmtl grass
+Ka 0.0 0.0 0.0
+Kd 0.1 0.7 0.1
+Ks 0.0 0.0 0.0
+illum 1
+
+newmtl seawater
+Ns 1000.0
+Ka 0.0 0.0 0.0
+Kd 0.0 0.0 0.0
+Ks 1.0 1.0 1.0
+Ni 1.33
+illum 12

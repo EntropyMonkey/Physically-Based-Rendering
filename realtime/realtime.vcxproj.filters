@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{3546f8d5-362b-4ec5-a95a-76fa6bf5d2d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{a66dbad2-eb68-40c3-90a8-b58e77b95843}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lights">
+      <UniqueIdentifier>{2168416c-0829-4fcb-aafb-c61c1af3202b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sampling">
+      <UniqueIdentifier>{71aab49f-4536-47d1-aedf-a6f9bbb20dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PRT">
+      <UniqueIdentifier>{476fd5cc-8ec7-4803-abb9-1bbe690fcdb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnvShaders">
+      <UniqueIdentifier>{438528cd-b54c-43d4-b26b-f77889ac11fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{c299c144-c7b1-4f4f-91ff-70ba9a611c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{6fefafe9-bdba-4c55-bc50-93d1702a73b9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cubemap.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Emission.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Glossy.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Lambertian.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Metal.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Mirror.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Reflectance.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="SoftShadow.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Transparent.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="AreaLight.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Directional.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="Randomizer.cpp">
+      <Filter>Sampling</Filter>
+    </ClCompile>
+    <ClCompile Include="legendre.cpp">
+      <Filter>PRT</Filter>
+    </ClCompile>
+    <ClCompile Include="RadianceTransfer.cpp">
+      <Filter>PRT</Filter>
+    </ClCompile>
+    <ClCompile Include="SHDirectional.cpp">
+      <Filter>PRT</Filter>
+    </ClCompile>
+    <ClCompile Include="SHLight.cpp">
+      <Filter>PRT</Filter>
+    </ClCompile>
+    <ClCompile Include="SHOmni.cpp">
+      <Filter>PRT</Filter>
+    </ClCompile>
+    <ClCompile Include="EnvSphere.cpp">
+      <Filter>EnvShaders</Filter>
+    </ClCompile>
+    <ClCompile Include="HDRTexture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereTexture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="realtime.cpp" />
+    <ClCompile Include="obj_load.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="TriMesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cubemap.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Emission.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Glossy.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Lambertian.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Metal.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Mirror.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflectance.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SoftShadow.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Transparent.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AreaLight.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Directional.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="mt_random.h">
+      <Filter>Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="Randomizer.h">
+      <Filter>Sampling</Filter>
+    </ClInclude>
+    <ClInclude Include="legendre.h">
+      <Filter>PRT</Filter>
+    </ClInclude>
+    <ClInclude Include="RadianceTransfer.h">
+      <Filter>PRT</Filter>
+    </ClInclude>
+    <ClInclude Include="SHDirectional.h">
+      <Filter>PRT</Filter>
+    </ClInclude>
+    <ClInclude Include="SHLight.h">
+      <Filter>PRT</Filter>
+    </ClInclude>
+    <ClInclude Include="SHOmni.h">
+      <Filter>PRT</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvSphere.h">
+      <Filter>EnvShaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRTexture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereTexture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_load.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Object3D.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMaterial.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="TriMesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

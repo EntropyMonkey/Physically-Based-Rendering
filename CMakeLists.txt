@@ -1,0 +1,175 @@
+IF(COMMAND cmake_policy)
+  CMAKE_POLICY(SET CMP0003 NEW)
+ENDIF(COMMAND cmake_policy)
+set(CMAKE_VERBOSE_MAKEFILE true)
+
+PROJECT(render)
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+#--------------------------------------------------------------------------
+
+# Just debug / release 
+set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+
+# Setup compiler specific flags for different configuration modes
+IF(MSVC)
+  ADD_DEFINITIONS(-D_SCL_SECURE_NO_WARNINGS)
+  ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+  # ADD_DEFINITIONS(-D_HAS_ITERATOR_DEBUGGING=0)  # If you got problems with iterators in MSVC then you might want to outcomment ths line
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /openmp")
+ELSEIF(CMAKE_COMPILER_IS_GNUCC)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fopenmp -fpermissive")
+ELSE()
+  SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -openmp -O3 -parallel -xAVX")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp -O3 -parallel -xAVX")
+  ADD_DEFINITIONS(-D_OPENMP)
+ENDIF()
+
+# out-comment to support unit-testing
+#ENABLE_TESTING()   
+
+# Add our own cmake modules
+SET(
+  CMAKE_MODULE_PATH 
+  ${PROJECT_SOURCE_DIR}/CMake 
+  ${PROJECT_SOURCE_DIR}/cmake 
+  ${CMAKE_MODULE_PATH}
+  )
+
+#--------------------------------------------------------------------------
+
+FIND_PACKAGE(OpenGL)
+IF(NOT OPENGL_FOUND)
+  MESSAGE("Could not find OpenGL library")
+ENDIF()
+
+# FIND_PACKAGE(GLUT)  # sucks on windows so we have to do our own stuff
+FIND_PACKAGE(MYGLUT)
+IF(NOT GLUT_FOUND)
+  MESSAGE("Could not find GLUT library")
+ENDIF()
+
+FIND_PACKAGE(GLEW)
+IF(NOT GLEW_FOUND)
+  MESSAGE("Could not find GLEW library")
+ENDIF()
+
+#---------------------------------------------------------------------
+
+#FIND_PACKAGE(GEL)   # does not exist? so we build it ourselves
+INCLUDE_DIRECTORIES(  
+  ${PROJECT_SOURCE_DIR}/GEL/
+  ${GLEW_INCLUDE_DIR}
+  ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
+)
+
+FILE(GLOB GEL_CGLA_SRCS       ${PROJECT_SOURCE_DIR}/GEL/CGLA/*.cpp)
+FILE(GLOB GEL_CGLA_HDRS       ${PROJECT_SOURCE_DIR}/GEL/CGLA/*.h )
+FILE(GLOB GEL_GLGRAPHICS_SRCS ${PROJECT_SOURCE_DIR}/GEL/GLGraphics/*.cpp
+                              ${PROJECT_SOURCE_DIR}/GEL/GLGraphics/*.c)
+FILE(GLOB GEL_GLGRAPHICS_HDRS ${PROJECT_SOURCE_DIR}/GEL/GLGraphics/*.h )
+FILE(GLOB GEL_UTIL_SRCS       ${PROJECT_SOURCE_DIR}/GEL/Util/*.cpp)
+FILE(GLOB GEL_UTIL_HDRS       ${PROJECT_SOURCE_DIR}/GEL/Util/*.h )
+
+ADD_LIBRARY(GEL
+  ${GEL_CGLA_SRCS}
+  ${GEL_CGLA_HDRS} 
+  ${GEL_GLGRAPHICS_SRCS}
+  ${GEL_GLGRAPHICS_HDRS} 
+  ${GEL_UTIL_SRCS}
+  ${GEL_UTIL_HDRS} 
+  )
+
+# TARGET_LINK_LIBRARIES(GEL ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )
+
+SET_TARGET_PROPERTIES(GEL PROPERTIES DEBUG_POSTFIX "d" )
+
+SET(GEL_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/GEL")
+SET(GEL_LIBRARIES   "GEL")
+
+#---------------------------------------------------------------------
+#
+# Depends on GEL/CGLA (header only)
+# Depends on Util/XmlParser (header only)
+#
+
+INCLUDE_DIRECTORIES(  
+  ${PROJECT_SOURCE_DIR}/
+  ${PROJECT_SOURCE_DIR}/optprops
+  ${GLEW_INCLUDE_DIR}
+  ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
+  ${GEL_INCLUDE_DIR}
+)
+
+FILE(GLOB OPT_PROPS_SRCS ${PROJECT_SOURCE_DIR}/optprops/*.cpp)
+FILE(GLOB OPT_PROPS_HDRS ${PROJECT_SOURCE_DIR}/optprops/*.h )
+
+ADD_LIBRARY(optprops
+  ${OPT_PROPS_SRCS}
+  ${OPT_PROPS_HDRS} 
+  )
+
+SET_TARGET_PROPERTIES(optprops PROPERTIES DEBUG_POSTFIX "d" )
+
+#---------------------------------------------------------------------
+
+INCLUDE_DIRECTORIES(  
+  ${PROJECT_SOURCE_DIR}/
+  ${PROJECT_SOURCE_DIR}/optprops
+  ${PROJECT_SOURCE_DIR}/realtime
+  ${GLEW_INCLUDE_DIR}
+  ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
+  ${GEL_INCLUDE_DIR}
+)
+
+FILE(GLOB REALTIME_SRCS ${PROJECT_SOURCE_DIR}/realtime/*.cpp)
+FILE(GLOB REALTIME_HDRS ${PROJECT_SOURCE_DIR}/realtime/*.h )
+
+ADD_EXECUTABLE(realtime
+  ${REALTIME_SRCS}
+  ${REALTIME_HDRS} 
+  )
+
+TARGET_LINK_LIBRARIES(realtime ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} optprops ${GEL_LIBRARIES})
+
+SET_TARGET_PROPERTIES(realtime PROPERTIES DEBUG_POSTFIX "d" )
+SET_TARGET_PROPERTIES(realtime PROPERTIES RUNTIME_OUTPUT_DIRECTORY                "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(realtime PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG          "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(realtime PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE        "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(realtime PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL     "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(realtime PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/bin/")
+
+#---------------------------------------------------------------------
+
+INCLUDE_DIRECTORIES(  
+  ${PROJECT_SOURCE_DIR}/
+  ${PROJECT_SOURCE_DIR}/optprops
+  ${PROJECT_SOURCE_DIR}/pathtrace
+  ${GLEW_INCLUDE_DIR}
+  ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
+  ${GEL_INCLUDE_DIR}
+)
+
+FILE(GLOB PATH_TRACE_SRCS ${PROJECT_SOURCE_DIR}/pathtrace/*.cpp)
+FILE(GLOB PATH_TRACE_HDRS ${PROJECT_SOURCE_DIR}/pathtrace/*.h )
+
+ADD_EXECUTABLE(pathtrace
+  ${PATH_TRACE_SRCS}
+  ${PATH_TRACE_HDRS} 
+  )
+
+TARGET_LINK_LIBRARIES(pathtrace ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} optprops ${GEL_LIBRARIES})
+
+SET_TARGET_PROPERTIES(pathtrace PROPERTIES DEBUG_POSTFIX "d" )
+SET_TARGET_PROPERTIES(pathtrace PROPERTIES RUNTIME_OUTPUT_DIRECTORY                "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(pathtrace PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG          "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(pathtrace PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE        "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(pathtrace PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL     "${PROJECT_SOURCE_DIR}/bin/")
+SET_TARGET_PROPERTIES(pathtrace PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/bin/")
+
+#---------------------------------------------------------------------

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pathtrace", "pathtrace\pathtrace.vcxproj", "{E92262B2-DBD4-45CC-8665-BC8D475B449A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C93D9AF0-8098-44D8-91BB-17105F400AB3} = {C93D9AF0-8098-44D8-91BB-17105F400AB3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "realtime", "realtime\realtime.vcxproj", "{1F228B7B-1CAF-46D3-99D4-511F0DC483CE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C93D9AF0-8098-44D8-91BB-17105F400AB3} = {C93D9AF0-8098-44D8-91BB-17105F400AB3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optprops", "optprops\optprops.vcxproj", "{5BB75DE0-C159-481A-A549-212353D2578F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GEL", "GEL\GEL.vcxproj", "{C93D9AF0-8098-44D8-91BB-17105F400AB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E92262B2-DBD4-45CC-8665-BC8D475B449A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E92262B2-DBD4-45CC-8665-BC8D475B449A}.Debug|Win32.Build.0 = Debug|Win32
+		{E92262B2-DBD4-45CC-8665-BC8D475B449A}.Release|Win32.ActiveCfg = Release|Win32
+		{E92262B2-DBD4-45CC-8665-BC8D475B449A}.Release|Win32.Build.0 = Release|Win32
+		{1F228B7B-1CAF-46D3-99D4-511F0DC483CE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1F228B7B-1CAF-46D3-99D4-511F0DC483CE}.Debug|Win32.Build.0 = Debug|Win32
+		{1F228B7B-1CAF-46D3-99D4-511F0DC483CE}.Release|Win32.ActiveCfg = Release|Win32
+		{1F228B7B-1CAF-46D3-99D4-511F0DC483CE}.Release|Win32.Build.0 = Release|Win32
+		{5BB75DE0-C159-481A-A549-212353D2578F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5BB75DE0-C159-481A-A549-212353D2578F}.Debug|Win32.Build.0 = Debug|Win32
+		{5BB75DE0-C159-481A-A549-212353D2578F}.Release|Win32.ActiveCfg = Release|Win32
+		{5BB75DE0-C159-481A-A549-212353D2578F}.Release|Win32.Build.0 = Release|Win32
+		{C93D9AF0-8098-44D8-91BB-17105F400AB3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C93D9AF0-8098-44D8-91BB-17105F400AB3}.Debug|Win32.Build.0 = Debug|Win32
+		{C93D9AF0-8098-44D8-91BB-17105F400AB3}.Release|Win32.ActiveCfg = Release|Win32
+		{C93D9AF0-8098-44D8-91BB-17105F400AB3}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
