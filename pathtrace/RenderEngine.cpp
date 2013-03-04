@@ -78,20 +78,22 @@ RenderEngine::RenderEngine()
     tracing(false),
     done(false),
     shadows_on(true),
-    use_default_light(true),                                   // Choose whether to use the default light or not
-    light_pow(Vec3f(M_PIf)),                                   // Power of the default light
-    light_dir(normalize(Vec3f(-1.0f))),                        // Direction of the default light
+    use_default_light(false),                                   // Choose whether to use the default light or not
+    light_pow(Vec3f(M_PIf)),                                    // Power of the default light
+    light_dir(normalize(Vec3f(-1.0f))),                         // Direction of the default light
     default_light(&tracer, light_pow, light_dir),
-    use_sun_and_sky(false),                                    // Choose whether to use a sky model or not
+
+    use_sun_and_sky(true),                                      // Choose whether to use a sky model or not
     background(Vec3f(0.8f, 0.9f, 1.0f)),                       // Background color
     bgtex_filename(""),                                        // Background texture file name
     day_of_year(255.0),                                        // Day in the year counting from 1 January
-    time_of_day(12.0),                                         // Hour in the day where 12 is solar noon
+    time_of_day(13),                                         // Hour in the day where 12 is solar noon
     latitude(55.77),                                           // Angular distance in degrees measured from equator
     world_up(0.0f, 1.0f, 0.0f),                                // The world's up direction
     angle_with_south(0.0),                                     // Angle of the world z-axis wrt. south
     turbidity(2.4),                                            // Atmospheric turbidity (2 is clear sky)
     sun_sky(&tracer),
+    
     prt_filename("scene.prt"),
     current_shader(0),
     lambertian(scene.get_lights()),
@@ -221,7 +223,9 @@ void RenderEngine::init_tracer()
   // Insert background geometry and texture/color
   if(use_sun_and_sky)
     scene.add_plane(Vec3f(0.0f, 0.0f, 0.0f), world_up, "..\\models\\plane.mtl", 2); // standard plane
+  
   tracer.set_background(background);
+ 
   if(!bgtex_filename.empty())
   {
     list<string> dot_split;
@@ -232,13 +236,21 @@ void RenderEngine::init_tracer()
       bgtex.load(bgtex_filename.c_str());
     tracer.set_background(&bgtex);
   }
+
   if(use_sun_and_sky)
   {
     // Use the Julian date (day_of_year), the solar time (time_of_day), the latitude (latitude),
     // and the angle with South (angle_with_south) to find the direction toward the sun (sun_dir).
-    Vec3f sun_dir = Vec3f(-light_dir[0], light_dir[1], -light_dir[2]);
-    sun_sky.setSunTheta(acos(sun_dir[2]));
-    sun_sky.setSunPhi(atan(sun_dir[1]/sun_dir[0]));
+    //Vec3f sun_dir = Vec3f(-light_dir[0], light_dir[1], -light_dir[2]);
+    // hard coded numbers are from Preetham et al.'s A Practical Analytical Model for Daylight, SIGGRAPH 1999
+    float declination = 0.4093 * sin(2 * M_PIf * (day_of_year - 81) / 368);
+    float theta = M_PIf * 0.5f - asin(sin(latitude) * sin(declination) - 
+      cos(latitude) * cos(declination) * cos(M_PIf * time_of_day / 12));
+    float phi = atan(-(cos(declination) * sin(M_PIf * time_of_day / 12)) / 
+      (cos(latitude) * sin(declination) - sin(latitude) * cos(declination) * cos(M_PIf * time_of_day / 12)));
+
+    sun_sky.setSunTheta(theta);
+    sun_sky.setSunPhi(phi);
     sun_sky.setTurbidity(turbidity);
     sun_sky.init();
     tracer.set_background(&sun_sky);
@@ -272,20 +284,18 @@ void RenderEngine::init_tracer()
 
   // Add polygons with an ambient material as area light sources
   unsigned int lights_in_scene = scene.extract_area_lights(&tracer, 4);  // Set number of samples per light source here
-
-  // If no light in scene, add default light source (shadow off)
-  if(lights_in_scene == 0 && use_default_light)
+    
+  if(use_sun_and_sky)
   {
-    if(use_sun_and_sky)
-    {
-      // Use the Julian date (day_of_year), the solar time (time_of_day), the latitude (latitude),
-      // the world up direction (world_up), and the angle with South (angle_with_south) to change
-      // the default directional light such that it resembles light from the sun.
-      Vec3f sun_dir = -light_dir;
-      Vec3f solar_irrad = light_pow;
-      default_light = Directional(&tracer, solar_irrad, -sun_dir); 
-    }
+    cout << "Adding sky light." << endl;
+    scene.add_light(&sun_sky);
+  }
+  else if (use_default_light)
+  {
     cout << "Adding default light: " << default_light.describe() << endl;
+    Vec3f sun_dir = -light_dir;
+    Vec3f solar_irrad = light_pow;
+    default_light = Directional(&tracer, solar_irrad, -sun_dir);
     scene.add_light(&default_light);
   }
 

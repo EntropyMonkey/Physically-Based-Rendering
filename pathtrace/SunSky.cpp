@@ -22,7 +22,17 @@ PreethamSunSky::PreethamSunSky(RayTracer* ray_tracer, unsigned int no_of_samples
 
 bool PreethamSunSky::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 {
-  return false;
+  dir = const_cast<PreethamSunSky*>(this)->getSunDir();
+  L = const_cast<PreethamSunSky*>(this)->sunColor() * 0.001f;
+
+  // test for shadow
+  Ray shadowRay(pos, dir);
+  bool inShadow = false;
+
+  if (shadows)
+    inShadow = tracer->trace(shadowRay);
+
+  return !inShadow;
 }
 
 void PreethamSunSky::init()
@@ -92,7 +102,6 @@ void PreethamSunSky::init()
 
 // lambda is wavelength in micro meters
 float PreethamSunSky::calculateAbsorption( float sun_theta, float m, float lambda, float turbidity, float k_o, float k_wa ) 
-
 {
   float alpha = 1.3f;                             // wavelength exponent
   float beta  = 0.04608f * turbidity - 0.04586f;  // turbidity coefficient
@@ -130,7 +139,7 @@ Vec3f PreethamSunSky::sunColor()
     Y += results[i]*cie_table[i][2] * 10.0f; 
     Z += results[i]*cie_table[i][3] * 10.0f; 
   }
-  Vec3f result = XYZ2rgb( 683.0f * Vec3f( X, Y, Z ) ) / 1000.0f; // return result in kcd/m^2
+  Vec3f result = XYZ2rgb(/* 683.0f **/ Vec3f( X, Y, Z ) ) / 1000.0f; // return result in kcd/m^2
 
   return result;
 }
