@@ -15,6 +15,10 @@
 # Visual Studio Stuff
 /Debug
 /Release
+GEL/Release
+optprop/Release
+pathtrace/Release
+realtime/Release
 *.vcxproj.user
 *.pdb
 *.aux
