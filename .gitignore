@@ -16,7 +16,7 @@
 /Debug
 /Release
 GEL/Release
-optprop/Release
+optprops/Release
 pathtrace/Release
 realtime/Release
 *.vcxproj.user
