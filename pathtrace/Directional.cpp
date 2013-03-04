@@ -32,7 +32,17 @@ bool Directional::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
   // Hint: Construct a shadow ray using the Ray datatype (it has a constructor 
   //       taking the initial position and direction of the ray as arguments)
   
-  return false;
+  dir = -light_dir;
+  L = emission;
+
+  // test for shadow
+  Ray shadowRay(pos, -light_dir);
+  bool inShadow = false;
+
+  if (shadows)
+    inShadow = tracer->trace(shadowRay);
+
+  return !inShadow;
 }
 
 string Directional::describe() const

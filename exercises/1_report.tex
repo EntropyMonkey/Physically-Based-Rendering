@@ -1,0 +1,213 @@
+\documentclass[a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{color}
+
+% set listing style
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+   basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+   breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+   breaklines=true,                 % sets automatic line breaking
+   captionpos=t,                    % sets the caption-position to bottom
+   commentstyle=\color{mygreen},    % comment style
+   deletekeywords={...},            % if you want to delete keywords from the given language
+   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+   frame=false,                    	% adds a frame around the code
+   keywordstyle=\color{blue},       % keyword style
+   language=Octave,                 % the language of the code
+   morekeywords={*,...},            % if you want to add more keywords to the set
+   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+   numbersep=5pt,                   % how far the line-numbers are from the code
+   numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+   rulecolor=\color{mygray},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+   showstringspaces=false,          % underline spaces within strings only
+   showtabs=false,                  % show tabs within strings adding particular underscores
+   stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+   stringstyle=\color{mymauve},     % string literal style
+   tabsize=2,                       % sets default tabsize to 2 spaces
+   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+% nice listing captions
+\DeclareCaptionFont{white}{ \color{white} }
+\DeclareCaptionFormat{listing}{
+   \colorbox[cmyk]{0.43, 0.35, 0.35,0.01 }{
+     \parbox{\textwidth}{\hspace{15pt}#1#2#3}
+   }
+}
+\captionsetup[lstlisting]{ format=listing, labelfont=white, textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize} }
+
+\begin{document}
+
+% title
+\begin{titlepage}
+\textsc{\LARGE Physically Based Rendering}\\[1.5cm]
+
+\emph{Student:}\\
+Andrea \textsc{Distler}, 130269\\[1.5cm]
+
+\emph{Teacher:}\\
+Jeppe \textsc{Frisvald}\\
+
+\vfill
+
+{\large \today}
+\end{titlepage}
+
+% table of contents
+\tableofcontents
+\newpage
+
+% contents
+\section{Report Exercise 1}
+
+\begin{itemize}
+\item{Implemented a directional light with shadows}
+\item{Implemented an area light with shadows}
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/bunny_noshadows.png}
+		\caption{Without shadows: ~5s}
+		\label{fig:bunnynoshadows}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/bunny_shadowed.png}
+		\caption{With shadows: ~8s}
+		\label{fig:bunnyshadowed}
+	\end{subfigure}
+	\caption{Bunny.obj, Tris: 69451, 36 samples, 1 directional light, Lambertian shader}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/arealight_noshadows.png}
+		\caption{Without shadows: 0.3s}
+		\label{fig:arealightnoshadows}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/arealight_shadows.png}
+		\caption{With shadows: 0.5s}
+		\label{fig:arealightshadows}
+	\end{subfigure}
+	\caption{Cornellbox.obj and CornellBlocks.obj, Tris: 36, 4 samples, 1 area light, Lambertian shaders}
+\end{figure}
+
+\newpage
+\begin{lstlisting}[language=C++,caption=Directional.cpp,label=lst:directional]
+bool Directional::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+{
+  dir = -light_dir;
+  L = emission;
+
+  // test for shadow
+  Ray shadowRay(pos, -light_dir);
+  bool inShadow = false;
+
+  if (shadows)
+    inShadow = tracer->trace(shadowRay);
+
+  return !inShadow;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++,caption=Lambertian.cpp,label=lst:lambertian]
+Vec3f Lambertian::shade(Ray& r, bool emit) const
+{
+  Vec3f rho_d = get_diffuse(r);
+  Vec3f result(0.0f);
+  
+  // temp light direction and radiance
+  Vec3f lightDirection, radiance;
+  for (std::vector<Light*>::const_iterator it = lights.begin(); it != lights.end(); it++)
+  {
+    if ((*it)->sample(r.hit_pos, lightDirection, radiance))
+    {
+      // output of Lambertian BRDF
+      Vec3f f = rho_d * M_1_PIf;
+      
+      // directional light radiance
+      // f - scattered light radiance, radiance - current light radiance, last term: cosine cut off at 0
+      result += f * radiance * std::max(dot(r.hit_normal, lightDirection), 0.0f);
+    }
+  }
+
+  return result + Emission::shade(r, emit);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++,caption=AreaLight.cpp,label=lst:arealight]
+bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+{  
+  // Get geometry info
+  const IndexedFaceSet& geometry = mesh->geometry;
+	const IndexedFaceSet& normals = mesh->normals;
+
+  // averaged light position
+  Vec3f lightPosition = Vec3f(0.0f);
+  // averaged normals
+  Vec3f lightNormal = Vec3f(0.0f);
+  // emission summed up from all faces
+  Vec3f emission = Vec3f(0.0f);
+
+  // iterate over all faces
+  for (int i = 0; i < geometry.no_faces(); i++)
+  {
+    // get the center of the face
+    Vec3i face = geometry.face(i);
+    Vec3f v0 = geometry.vertex(face[0]);
+    Vec3f v1 = geometry.vertex(face[1]);
+    Vec3f v2 = geometry.vertex(face[2]);
+    Vec3f faceCenter = v0 + (v1 - v0 + v2 - v0) * 0.5f;
+    
+    // combine light position
+    lightPosition += faceCenter;
+
+    // average normals
+    lightNormal += (normals.vertex(face[0]) + normals.vertex(face[1]) + normals.vertex(face[2])) / 3;
+
+    // add emission
+    emission += mesh->face_areas[i] * get_emission(i);
+  }
+
+  // average light position
+  lightPosition /= geometry.no_faces();
+
+  lightNormal.normalize();
+  
+  // get light direction and distance to light
+  Vec3f lightDirection = lightPosition - pos;
+  float lightDistance = length(lightDirection);
+
+  // set area light direction, normalize
+  dir = lightDirection / lightDistance;
+
+  // set radiance
+  L = emission * std::max(dot(-dir, lightNormal), 0.0f) / (lightDistance * lightDistance);
+
+  // trace for shadows
+  bool inShadow = false;
+  if (shadows)
+  {
+    Ray shadowRay(pos, dir);
+    shadowRay.tmax = lightDistance - 0.1111f;
+    inShadow = tracer->trace(shadowRay);
+  }
+
+  return !inShadow;
+}
+\end{lstlisting}
+
+\end{document}

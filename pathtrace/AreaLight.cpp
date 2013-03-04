@@ -18,11 +18,6 @@ using namespace CGLA;
 bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 
 {
-  // Get geometry info
-  const IndexedFaceSet& geometry = mesh->geometry;
-	const IndexedFaceSet& normals = mesh->normals;
-	const float no_of_faces = geometry.no_faces();
-
   // Compute output and return value given the following information.
   //
   // Input:  pos (the position of the geometry in the scene)
@@ -44,7 +39,62 @@ bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
   //       (b) The framework includes a function normalize(v) which 
   //       returns the vector v normalized to length 1.
   
-  return false;  
+  // Get geometry info
+  const IndexedFaceSet& geometry = mesh->geometry;
+	const IndexedFaceSet& normals = mesh->normals;
+
+  // averaged light position
+  Vec3f lightPosition = Vec3f(0.0f);
+  // averaged normals
+  Vec3f lightNormal = Vec3f(0.0f);
+  // emission summed up from all faces
+  Vec3f emission = Vec3f(0.0f);
+
+  // iterate over all faces
+  for (int i = 0; i < geometry.no_faces(); i++)
+  {
+    // get the center of the face
+    Vec3i face = geometry.face(i);
+    Vec3f v0 = geometry.vertex(face[0]);
+    Vec3f v1 = geometry.vertex(face[1]);
+    Vec3f v2 = geometry.vertex(face[2]);
+    Vec3f faceCenter = v0 + (v1 - v0 + v2 - v0) * 0.5f;
+    
+    // combine light position
+    lightPosition += faceCenter;
+
+    // average normals
+    lightNormal += (normals.vertex(face[0]) + normals.vertex(face[1]) + normals.vertex(face[2])) / 3;
+
+    // add emission
+    emission += mesh->face_areas[i] * get_emission(i);
+  }
+
+  // average light position
+  lightPosition /= geometry.no_faces();
+
+  lightNormal.normalize();
+  
+  // get light direction and distance to light
+  Vec3f lightDirection = lightPosition - pos;
+  float lightDistance = length(lightDirection);
+
+  // set area light direction, normalize
+  dir = lightDirection / lightDistance;
+
+  // set radiance
+  L = emission * std::max(dot(-dir, lightNormal), 0.0f) / (lightDistance * lightDistance);
+
+  // trace for shadows
+  bool inShadow = false;
+  if (shadows)
+  {
+    Ray shadowRay(pos, dir);
+    shadowRay.tmax = lightDistance - 0.1111f;
+    inShadow = tracer->trace(shadowRay);
+  }
+
+  return !inShadow;
 }
 
 bool AreaLight::emit(Ray& r, Vec3f& Phi) const
