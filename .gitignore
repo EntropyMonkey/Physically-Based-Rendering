@@ -12,5 +12,12 @@
 *.la
 *.a
 
-# Visual Studio Debug Stuff
+# Visual Studio Stuff
 /Debug
+/Release
+*.vcxproj.user
+*.pdb
+*.aux
+*.log
+*.toc
+*.suo
