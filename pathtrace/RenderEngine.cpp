@@ -87,7 +87,7 @@ RenderEngine::RenderEngine()
     background(Vec3f(0.8f, 0.9f, 1.0f)),                       // Background color
     bgtex_filename(""),                                        // Background texture file name
     day_of_year(255.0),                                        // Day in the year counting from 1 January
-    time_of_day(13),                                         // Hour in the day where 12 is solar noon
+    time_of_day(23),                                         // Hour in the day where 12 is solar noon
     latitude(55.77),                                           // Angular distance in degrees measured from equator
     world_up(0.0f, 1.0f, 0.0f),                                // The world's up direction
     angle_with_south(0.0),                                     // Angle of the world z-axis wrt. south
