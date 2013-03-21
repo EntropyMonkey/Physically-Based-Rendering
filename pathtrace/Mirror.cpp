@@ -27,7 +27,17 @@ Vec3f Mirror::shade(Ray& r, bool emit) const
   //       (b) Use the function shade_new_ray(...) to pass the newly traced ray to
   //       the shader for the surface it hit.
 
-  return Vec3f(0.0f);
+  Vec3f radiance(0.0f);
+
+  if (r.trace_depth < max_depth)
+  {
+    Ray reflected;
+    tracer->trace_reflected(r, reflected);
+
+    radiance = shade_new_ray(reflected);
+  }
+
+  return radiance;
 }
 
 Vec3f Mirror::shade_new_ray(Ray& r) const

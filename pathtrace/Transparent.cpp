@@ -54,5 +54,26 @@ Vec3f Transparent::split_shade(Ray& r, bool emit) const
   //       (b) Use the function shade_new_ray(...) to pass a newly traced ray to
   //       the shader for the surface it hit.
 
-  return Vec3f(0.0f);
+  Vec3f radiance(0.0f);
+
+  if (r.trace_depth < 100)
+  {
+    Ray reflected;
+    double fresnelR;
+    tracer->trace_reflected(r, reflected, fresnelR);
+
+    if (fresnelR > 0.001)
+      radiance += shade_new_ray(reflected) * (1.0f - fresnelR);
+
+    // eliminate rays following the surface
+    if (1 - fresnelR > 0.001)
+    {
+      Ray refracted;
+      tracer->trace_refracted(r, refracted);
+      radiance += shade_new_ray(refracted) * fresnelR;
+    }
+  }
+
+
+  return radiance;
 }

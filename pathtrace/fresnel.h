@@ -8,28 +8,36 @@
 #include <cmath>
 #include <complex>
 
-inline double fresnel_r_s(double cos_theta1, double cos_theta2, double ior1, double ior2)
-{
-  // Compute the perpendicularly polarized component of the Fresnel reflectance
-  return 0.0;
-}
-
 inline double fresnel_r_p(double cos_theta1, double cos_theta2, double ior1, double ior2)
 {
   // Compute the parallelly polarized component of the Fresnel reflectance
-  return 0.0;
+  return (ior2 * cos_theta1 - ior1 * cos_theta2) / (ior2 * cos_theta1 + ior1 * cos_theta2);
+}
+
+inline double fresnel_r_s(double cos_theta1, double cos_theta2, double ior1, double ior2)
+{
+  // Compute the perpendicularly polarized component of the Fresnel reflectance
+  return (ior1 * cos_theta1 - ior2 * cos_theta2) / (ior1 * cos_theta1 + ior2 * cos_theta2);
 }
 
 inline double fresnel_R(double cos_theta1, double cos_theta2, double ior1, double ior2)
 {
   // Compute the Fresnel reflectance using fresnel_r_s(...) and fresnel_r_p(...)
-  return 0.0;
+  double r_s = fresnel_r_s(cos_theta1, cos_theta2, ior1, ior2);
+  double r_p = fresnel_r_p(cos_theta1, cos_theta2, ior1, ior2);
+  return (r_s * r_s + r_p * r_p) * 0.5f;
 }
 
 inline double fresnel_R(double cos_theta, double ior1, double ior2)
 {
   // Compute cos_theta2 and use fresnel_R(...) to find the Fresnel reflectance
-  return 0.0;
+
+  // use pythagorean identity and snell's law
+  double sin_theta1 = sqrt(1 - cos_theta * cos_theta);
+  double sin_theta2 = ior1 / ior2 * sin_theta1;
+  double cos_theta2 = sqrt(1.0 - sin_theta2 * sin_theta2);
+
+  return fresnel_R(cos_theta, cos_theta2, ior1, ior2);
 }
 
 inline double fresnel_R(double cos_theta, std::complex<double> ior1, std::complex<double> ior2)
