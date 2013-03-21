@@ -18,9 +18,14 @@ GEL/Release
 optprops/Release
 pathtrace/Release
 realtime/Release
+GEL/Debug
+optprops/Debug
+pathtrace/Debug
+realtime/Debug
 *.vcxproj.user
 *.pdb
 *.aux
 *.log
 *.toc
 *.suo
+*.sdf
