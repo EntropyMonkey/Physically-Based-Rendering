@@ -14,7 +14,6 @@
 
 # Visual Studio Stuff
 /Debug
-/Release
 GEL/Release
 optprops/Release
 pathtrace/Release
