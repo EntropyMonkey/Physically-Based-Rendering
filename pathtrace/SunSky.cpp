@@ -23,7 +23,13 @@ PreethamSunSky::PreethamSunSky(RayTracer* ray_tracer, unsigned int no_of_samples
 bool PreethamSunSky::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 {
   dir = const_cast<PreethamSunSky*>(this)->getSunDir();
-  L = const_cast<PreethamSunSky*>(this)->sunColor() * 0.001f;
+
+  float area = 1;
+  float solid_angle = 2 * M_PI;
+  float cos_theta = dot(Vec3f(0, 1, 0), dir);
+
+  // * 0.00001f to convert to the right unit (cd/m^2)
+  L = const_cast<PreethamSunSky*>(this)->sunColor() / (area * solid_angle * cos_theta) * 0.00001f;
 
   // test for shadow
   Ray shadowRay(pos, dir);
@@ -139,7 +145,7 @@ Vec3f PreethamSunSky::sunColor()
     Y += results[i]*cie_table[i][2] * 10.0f; 
     Z += results[i]*cie_table[i][3] * 10.0f; 
   }
-  Vec3f result = XYZ2rgb(/* 683.0f **/ Vec3f( X, Y, Z ) ) / 1000.0f; // return result in kcd/m^2
+  Vec3f result = XYZ2rgb( 683.0f * Vec3f( X, Y, Z ) ) / 1000.0f; // return result in kcd/m^2
 
   return result;
 }

@@ -17,6 +17,7 @@ class PreethamSunSky : public Light
 {
 public:
   PreethamSunSky(RayTracer* ray_tracer, unsigned int no_of_samples = 1);
+  
 
   virtual bool sample(const CGLA::Vec3f& pos, CGLA::Vec3f& dir, CGLA::Vec3f& L) const;
 
