@@ -56,21 +56,21 @@ Vec3f Transparent::split_shade(Ray& r, bool emit) const
 
   Vec3f radiance(0.0f);
 
-  if (r.trace_depth < 100)
+  if (r.trace_depth < max_depth)
   {
-    Ray reflected;
+    Ray refracted;
     double fresnelR;
-    tracer->trace_reflected(r, reflected, fresnelR);
+    tracer->trace_refracted(r, refracted, fresnelR);
 
-    if (fresnelR > 0.001)
-      radiance += shade_new_ray(reflected) * (1.0f - fresnelR);
+    if (1 - fresnelR > 0.001)
+      radiance += shade_new_ray(refracted) * (1.0f - fresnelR);
 
     // eliminate rays following the surface
-    if (1 - fresnelR > 0.001)
+    if (fresnelR > 0.001)
     {
-      Ray refracted;
-      tracer->trace_refracted(r, refracted);
-      radiance += shade_new_ray(refracted) * fresnelR;
+      Ray reflected;
+      tracer->trace_reflected(r, reflected);
+      radiance += shade_new_ray(reflected) * fresnelR;
     }
   }
 
