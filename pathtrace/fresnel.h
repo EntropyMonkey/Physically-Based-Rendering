@@ -43,6 +43,7 @@ inline double fresnel_R(double cos_theta, double ior1, double ior2)
 inline double fresnel_R(double cos_theta, std::complex<double> ior1, std::complex<double> ior2)
 {
   // Compute the Fresnel reflectance for complex indices of refraction.
+  std::cout << "fresnel.h => called not implemented function fresnel_R(..)\n";
   return 0.0;
 }
 
@@ -50,6 +51,7 @@ inline double fresnel_R_s(double cos_theta, std::complex<double> ior1, std::comp
 {
   // Compute the perpendicularly polarized component of the Fresnel reflectance
   // for complex indices of refraction
+  std::cout << "fresnel.h => called not implemented function fresnel_R_s(..)\n";
   return 0.0;
 }
 
@@ -57,6 +59,7 @@ inline double fresnel_R_p(double cos_theta, std::complex<double> ior1, std::comp
 {
   // Compute the parallelly polarized component of the Fresnel reflectance
   // for complex indices of refraction
+  std::cout << "fresnel.h => called not implemented function fresnel_R_p(..)\n";
   return 0.0;
 }
 

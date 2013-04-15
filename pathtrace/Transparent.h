@@ -13,10 +13,12 @@
 class Transparent : public Mirror
 {
 public:
-  Transparent(PathTracer* pathtracer, int no_of_splits = 1, int max_trace_depth = 20) 
+  Transparent(PathTracer* pathtracer, int no_of_splits = 10, int max_trace_depth = 20) 
     : Mirror(pathtracer, max_trace_depth),
       splits(no_of_splits)
-  { }
+  { 
+    std::cout << "transparent: splits" << no_of_splits << std::endl;
+  }
 
   virtual CGLA::Vec3f shade(Ray& r, bool emit = true) const;
 

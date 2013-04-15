@@ -31,5 +31,7 @@ Vec3f Metal::shade(Ray& r, bool emit) const
   //       (b) Use the function shade_new_ray(...) to pass the newly traced ray to
   //       the shader for the surface it hit.
 
+  Vec3f radiance = Vec3f(0.0f);
+
   return result;
 }

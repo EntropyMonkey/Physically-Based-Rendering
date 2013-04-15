@@ -11,8 +11,7 @@ using namespace CGLA;
 
 Vec3f Transparent::shade(Ray& r, bool emit) const
 {
-  Vec3f result = split_shade(r, emit);
-
+  
   // Implement reflection and refraction using Russian roulette.
   //
   // Input:  r    (the ray that hit the material)
@@ -30,8 +29,39 @@ Vec3f Transparent::shade(Ray& r, bool emit) const
   //       Fresnel reflectance by supplying a third argument to one of these functions.
   //       (b) Use the function shade_new_ray(...) to pass the newly traced ray to
   //       the shader for the surface it hit.
+  
+  Vec3f radiance = Vec3f(0.0f);
 
-  return result;
+  if (r.trace_depth < splits)
+  {
+    radiance = split_shade(r, emit);
+  }
+  else if (r.trace_depth < max_depth)
+  {
+    // refraction
+    Ray refracted;
+    double fresnelR;
+    tracer->trace_refracted(r, refracted, fresnelR);
+
+    // russian roulette for reflections
+    float rand = randomizer.mt_random();
+
+    // 1st term -> russian roulette with fresnelR => pdf, 2nd term -> eliminating rays following surface
+    if (rand <= fresnelR && fresnelR > 0.001)
+    {
+      // reflect
+      Ray reflected;
+      tracer->trace_reflected(r, reflected);
+      radiance = shade_new_ray(reflected); // * fresnelR / fresnelR; // divide by fresnelR, since fresnelR is used as the step probability
+    }
+    // if not reflecting, take refraction
+    else if (1 - fresnelR > 0.001)
+    {
+      radiance = shade_new_ray(refracted); // * (1 - fresnelR) / (1 - fresnelR);
+    }
+  }
+
+  return radiance;
 }
 
 Vec3f Transparent::split_shade(Ray& r, bool emit) const
@@ -56,7 +86,7 @@ Vec3f Transparent::split_shade(Ray& r, bool emit) const
 
   Vec3f radiance(0.0f);
 
-  if (r.trace_depth < max_depth)
+  if (r.trace_depth < splits)
   {
     Ray refracted;
     double fresnelR;
