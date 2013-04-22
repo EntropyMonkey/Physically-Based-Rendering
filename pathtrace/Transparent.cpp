@@ -41,12 +41,12 @@ Vec3f Transparent::shade(Ray& r, bool emit) const
     // refraction
     Ray refracted;
     double fresnelR;
-    tracer->trace_refracted(r, refracted, fresnelR);
+    tracer->trace_refracted(r, refracted, fresnelR); // fresnelR => use as step probability
 
     // russian roulette for reflections
     float rand = randomizer.mt_random();
 
-    // 1st term -> russian roulette with fresnelR => pdf, 2nd term -> eliminating rays following surface
+    // 1st cond. -> russian roulette with fresnelR => pdf, 2nd cond. -> eliminating rays following surface
     if (rand <= fresnelR && fresnelR > 0.001)
     {
       // reflect

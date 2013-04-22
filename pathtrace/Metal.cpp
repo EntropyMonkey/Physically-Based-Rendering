@@ -33,5 +33,20 @@ Vec3f Metal::shade(Ray& r, bool emit) const
 
   Vec3f radiance = Vec3f(0.0f);
 
-  return result;
+  Vec3f fresnelR;
+  Ray reflected;
+
+  tracer->trace_reflected(r, reflected, fresnelR);
+
+  float p = (fresnelR[0] + fresnelR[1] + fresnelR[2]) / 3;
+  
+  // russian roulette for reflections
+  float rand = randomizer.mt_random();
+
+  if (rand < p || r.trace_depth < splits)
+  {
+    radiance = shade_new_ray(reflected) * fresnelR / p;
+  }
+
+  return radiance;
 }

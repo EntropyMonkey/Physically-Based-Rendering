@@ -36,6 +36,7 @@ bool RayTracer::trace_reflected(const Ray& in, Ray& out, double& R) const
   return trace(out);  
 }
 
+// uses complex indices of reflection - for conductors
 bool RayTracer::trace_reflected(const Ray& in, Ray& out, Vec3f& R) const
 {
   Vec3f normal = in.hit_normal;
