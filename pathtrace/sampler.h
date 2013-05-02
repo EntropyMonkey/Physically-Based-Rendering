@@ -48,12 +48,21 @@ inline CGLA::Vec3f sample_hemisphere(const CGLA::Vec3f& normal)
 
 inline CGLA::Vec3f sample_cosine_weighted(const CGLA::Vec3f& normal)
 {
+  // ref: http://www.rorydriscoll.com/2009/01/07/better-sampling/
+  // ref: http://pathtracing.wordpress.com/2011/03/03/cosine-weighted-hemisphere/
   // Get random numbers
+  const float r1 = randomizer.mt_random();
+  const float r2 = randomizer.mt_random();
+
+  const float theta = acos(sqrt(1.0f - r1));
+  const float phi = 2.0f * M_PI * r2;
 
 	// Calculate new direction as if the z-axis were the normal
+  CGLA::Vec3f _normal(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
 
   // Rotate from z-axis to actual normal and return
-  return CGLA::Vec3f(0.0f);
+  rotate_to_normal(normal, _normal);
+  return _normal;
 }
 
 inline CGLA::Vec3f sample_Phong_distribution(const CGLA::Vec3f& normal, const CGLA::Vec3f& dir, float shininess)

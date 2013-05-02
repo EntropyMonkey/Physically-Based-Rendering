@@ -7,11 +7,10 @@
 #include "Ambient.h"
 
 using namespace CGLA;
+using namespace std;
 
 Vec3f Ambient::shade(Ray& r, bool emit) const
 { 
-  Vec3f ambient(0.0f);
-
   // Implement ambient occlusion here.
   //
   // Input:  r    (the ray that hit the material)
@@ -29,5 +28,24 @@ Vec3f Ambient::shade(Ray& r, bool emit) const
   //       (b) Use the function tracer->get_background(...) to retrieve
   //       the ambient light in the direction of an unoccluded ray.
 
-  return ambient*get_diffuse(r);
+  Vec3f rho_d = get_diffuse(r);
+  Vec3f radiance(0.0f);
+
+  for (int sample = 0; sample < samples; sample++)
+  {
+    Ray ray;
+
+    bool inShadow = tracer->trace_cosine_weighted(r, ray);
+
+    if (!inShadow)
+    {
+      Vec3f sampleRadiance = tracer->get_background(ray.direction);
+      radiance += sampleRadiance * dot(r.hit_normal, ray.direction);
+    }
+  }
+  radiance *= rho_d / samples;
+
+  radiance += Lambertian::shade(r, emit);
+
+  return radiance;
 }

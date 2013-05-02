@@ -17,7 +17,6 @@ public:
     : Mirror(pathtracer, max_trace_depth),
       splits(no_of_splits)
   { 
-    std::cout << "transparent: splits" << no_of_splits << std::endl;
   }
 
   virtual CGLA::Vec3f shade(Ray& r, bool emit = true) const;
