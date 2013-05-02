@@ -38,6 +38,90 @@ bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
   //       is to be traced.
   //       (b) The framework includes a function normalize(v) which 
   //       returns the vector v normalized to length 1.
+
+  // this method uses monte carlo integration to create soft shadows
+
+  // Get geometry info
+  const IndexedFaceSet& geometry = mesh->geometry;
+	const IndexedFaceSet& normals = mesh->normals;
+
+  // get random triangle
+  int triangleIndex = randomizer.mt_random_int32() % geometry.no_faces();
+  
+  // get index for vertices of triangle
+  Vec3i vertexIndex = geometry.face(triangleIndex);
+  // get index for normals of triangle
+  Vec3i normalIndex = normals.face(triangleIndex);
+
+  // get random position on triangle
+  // ref: http://mathworld.wolfram.com/TrianglePointPicking.html
+  float sqrt_e1 = sqrt(randomizer.mt_random());
+  float e2 = randomizer.mt_random();
+
+  // sample barycentric coordinates
+  float u = 1 - sqrt_e1;
+  float v = (1 - e2) * sqrt_e1;
+  float w = e2 * sqrt_e1;
+  
+  // linear interpolation of vertices and normals, to get a point on the triangle and the according normal
+  Vec3f lightPosition = Vec3f(0.0f);
+  Vec3f lightNormal = Vec3f(0.0f);
+  
+  Vec3f uvw = Vec3f(u, v, w);
+  for (int i=0; i<3; i++)
+  {
+    lightPosition += geometry.vertex(vertexIndex[i]) * uvw[i];
+    lightNormal += normals.vertex(normalIndex[i]) * uvw[i];
+  }
+  lightNormal.normalize();
+  
+  // get light direction and distance to light
+  Vec3f lightDirection = lightPosition - pos;
+  float lightDistance = length(lightDirection);
+
+  // set area light direction, normalize
+  dir = lightDirection / lightDistance;
+  
+  // emission is scaled by geometry.no_faces() bec only 1/n are sampled
+  Vec3f emission = mesh->face_areas[triangleIndex] * get_emission(triangleIndex) * geometry.no_faces();
+  // set radiance
+  L = emission * max(dot(lightNormal, -dir), 0.0f) / (lightDistance * lightDistance);
+
+  // trace for shadows
+  bool inShadow = false;
+  if (shadows)
+  {
+    Ray shadowRay(pos, dir);
+    shadowRay.tmax = lightDistance - 0.1111f;
+    inShadow = tracer->trace(shadowRay);
+  }
+
+  return !inShadow;
+}
+
+bool AreaLight::simpleSample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+
+{
+  // Compute output and return value given the following information.
+  //
+  // Input:  pos (the position of the geometry in the scene)
+  //
+  // Output: dir (the direction toward the light)
+  //         L   (the radiance received from the direction dir)
+  //
+  // Return: true if not in shadow
+  //
+  // Relevant data fields that are available (see Light.h and above):
+  // shadows      (on/off flag for shadows)
+  // tracer       (pointer to ray tracer)
+  // geometry     (indexed face set of triangle vertices)
+  // normals      (indexed face set of vertex normals)
+  // no_of_faces  (number of faces in triangle mesh for light source)
+  //
+  // Hint: (a) Use the dist field of a ray to limit the distance it
+  //       is to be traced.
+  //       (b) The framework includes a function normalize(v) which 
+  //       returns the vector v normalized to length 1.
   
   // Get geometry info
   const IndexedFaceSet& geometry = mesh->geometry;

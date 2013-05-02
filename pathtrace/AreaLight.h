@@ -19,6 +19,7 @@ public:
   { }
 
   virtual bool sample(const CGLA::Vec3f& pos, CGLA::Vec3f& dir, CGLA::Vec3f& L) const;
+  virtual bool simpleSample(const CGLA::Vec3f& pos, CGLA::Vec3f& dir, CGLA::Vec3f& L) const;
   virtual bool emit(Ray& r, CGLA::Vec3f& Phi) const;
 
 protected:

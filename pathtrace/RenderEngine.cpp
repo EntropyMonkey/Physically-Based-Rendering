@@ -83,7 +83,7 @@ RenderEngine::RenderEngine()
     light_dir(normalize(Vec3f(-1.0f))),                         // Direction of the default light
     default_light(&tracer, light_pow, light_dir),
 
-    use_sun_and_sky(false),                                      // Choose whether to use a sky model or not
+    use_sun_and_sky(true),                                      // Choose whether to use a sky model or not
     background(Vec3f(0.8f, 0.9f, 1.0f)),                       // Background color
     bgtex_filename(""),                                        // Background texture file name
     day_of_year(255.0),                                        // Day in the year counting from 1 January
