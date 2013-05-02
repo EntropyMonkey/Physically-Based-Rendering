@@ -1,0 +1,221 @@
+\section{Report Exercise 4}
+
+Implemented
+\begin{itemize}
+	\item{an area light using Monte Carlo integration}
+	\item{ambient occlusion using cosine weighted sampling}
+\end{itemize}
+
+Relevant figures: \ref{fig:comparehardsoftambient}, \ref{fig:comparedirectambient}, \ref{fig:cornellrpp}, \ref{fig:cornellbunnyelephantambientarea}, and \ref{fig:bunnydaytimesambient}. Relevant listings: \ref{lst:arealight::sample}, \ref{lst:ambient::shade}, and \ref{lst:samplecosineweighted}.
+
+ \begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/cornellblocks_hardshadows_9rpp_5s.png}
+		\caption{Hard shadows, 9 rays per pixel, 5 seconds}
+		\label{fig:cornellblockshardshadows}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_9rpp_5s.png}
+		\caption{Area light with Monte Carlo integration, 9rpp, 5s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/cornellblocks_ambient_9rpp_20s.png}
+		\caption{Area light with Monte Carlo integration and ambient light, 9rpp, 20s, 5 samples}
+	\end{subfigure}
+	\caption{The Cornellbox with its blocks, comparing hard shadows, soft shadows, and ambient light.}
+	\label{fig:comparehardsoftambient}
+ \end{figure}
+ 
+ \begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{week4/bunny_4rpp_15s.png}
+		\caption{The bunny with sunsky lighting model, 4rpp, 15s}
+		\label{fig:bunnydirect}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\textwidth]{week4/bunny_ambient_9rpp_83s_12.png}
+		\caption{The bunny with sunsky lighting model at 12am, with ambient light. 9rpp, 83s}
+	\end{subfigure}
+	\caption{The bunny in different light conditions. Ambient light adds much to the realism of the picture.}
+	\label{fig:comparedirectambient}
+ \end{figure}
+ 
+ \begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{week4/box_bunny_elephant_ambient_area_9rpp_36s.png}
+	\caption{Bunny and elephant inside the cornellbox, ambient and area light. 9rpp, 36s, 5 samples}
+	\label{fig:cornellbunnyelephantambientarea}
+ \end{figure}
+ 
+ \begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_1rpp_1s.png}
+		\caption{1rpp, 1s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_4rpp_2s.png}
+		\caption{4rpp, 2s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_9rpp_5s.png}
+		\caption{9rpp, 5s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_16rpp_10s.png}
+		\caption{16rpp, 10s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_25rpp_17s.png}
+		\caption{25rpp, 17s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_36rpp_22s.png}
+		\caption{36rpp, 22s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/arealight_49rpp_34s.png}
+		\caption{49rpp, 34s}
+	\end{subfigure}
+	
+	\caption{Different ray densities, between 1 to 49 rays per pixel.}
+	\label{fig:cornellrpp}
+ \end{figure}
+ 
+ \begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/bunny_ambient_9rpp_86s_7.png}
+		\caption{7am, 9rpp, 86s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/bunny_ambient_9rpp_83s_12.png}
+		\caption{12am, 9rpp, 83s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/bunny_ambient_9rpp_84s_17.png}
+		\caption{7pm, 9rpp, 84s}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week4/bunny_ambient_9rpp_245s_19.png}
+		\caption{7pm, 9rpp, 245s}
+	\end{subfigure}
+	
+	\caption{The bunny at different times of the day. Lightmodel: sunsky, using ambient lighting}
+	\label{fig:bunnydaytimesambient}
+ \end{figure}
+ 
+ \newpage
+ \begin{lstlisting}[language=C++,caption=AreaLight::sample,label=lst:arealight::sample]
+ bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+{
+  // this method uses monte carlo integration to create soft shadows
+
+  // Get geometry info
+  const IndexedFaceSet& geometry = mesh->geometry;
+	const IndexedFaceSet& normals = mesh->normals;
+
+  // get random triangle
+  int triangleIndex = randomizer.mt_random_int32() % geometry.no_faces();
+  
+  // get index for vertices of triangle
+  Vec3i vertexIndex = geometry.face(triangleIndex);
+  // get index for normals of triangle
+  Vec3i normalIndex = normals.face(triangleIndex);
+
+  // get random position on triangle
+  // ref: http://mathworld.wolfram.com/TrianglePointPicking.html
+  float sqrt_e1 = sqrt(randomizer.mt_random());
+  float e2 = randomizer.mt_random();
+
+  // sample barycentric coordinates
+  float u = 1 - sqrt_e1;
+  float v = (1 - e2) * sqrt_e1;
+  float w = e2 * sqrt_e1;
+  
+  // linear interpolation of vertices and normals, to get a point on the triangle and the according normal
+  Vec3f lightPosition = Vec3f(0.0f);
+  Vec3f lightNormal = Vec3f(0.0f);
+  
+  Vec3f uvw = Vec3f(u, v, w);
+  for (int i=0; i<3; i++)
+  {
+    lightPosition += geometry.vertex(vertexIndex[i]) * uvw[i];
+    lightNormal += normals.vertex(normalIndex[i]) * uvw[i];
+  }
+  lightNormal.normalize();
+  
+  // get light direction and distance to light
+  Vec3f lightDirection = lightPosition - pos;
+  float lightDistance = length(lightDirection);
+
+  // set area light direction, normalize
+  dir = lightDirection / lightDistance;
+  
+  // emission is scaled by geometry.no_faces() bec only 1/n are sampled
+  Vec3f emission = mesh->face_areas[triangleIndex] * get_emission(triangleIndex) * geometry.no_faces();
+  // set radiance
+  L = emission * max(dot(lightNormal, -dir), 0.0f) / (lightDistance * lightDistance);
+
+  // trace for shadows
+  bool inShadow = false;
+  if (shadows)
+  {
+    Ray shadowRay(pos, dir);
+    shadowRay.tmax = lightDistance - 0.1111f;
+    inShadow = tracer->trace(shadowRay);
+  }
+
+  return !inShadow;
+}
+ \end{lstlisting}
+ 
+ \newpage
+ \begin{lstlisting}[language=C++,caption=Ambient::shade,label=lst:ambient::shade]
+ Vec3f Ambient::shade(Ray& r, bool emit) const
+{ 
+  Vec3f rho_d = get_diffuse(r);
+  Vec3f radiance(0.0f);
+
+  for (int sample = 0; sample < samples; sample++)
+  {
+    Ray ray;
+
+    bool inShadow = tracer->trace_cosine_weighted(r, ray);
+
+    if (!inShadow)
+    {
+      Vec3f sampleRadiance = tracer->get_background(ray.direction);
+      radiance += sampleRadiance * dot(r.hit_normal, ray.direction);
+    }
+  }
+  radiance *= rho_d / samples;
+
+  radiance += Lambertian::shade(r, emit);
+
+  return radiance;
+}
+ \end{lstlisting}
+ 
+ \begin{lstlisting}[language=C++,caption=sampler.h sample\_cosine\_weighted,label=lst:samplecosineweighted]
+ inline CGLA::Vec3f sample_cosine_weighted(const CGLA::Vec3f& normal)
+{
+  // ref: http://www.rorydriscoll.com/2009/01/07/better-sampling/
+  // ref: http://pathtracing.wordpress.com/2011/03/03/cosine-weighted-hemisphere/
+  // Get random numbers
+  const float r1 = randomizer.mt_random();
+  const float r2 = randomizer.mt_random();
+
+  const float theta = acos(sqrt(1.0f - r1));
+  const float phi = 2.0f * M_PI * r2;
+
+	// Calculate new direction as if the z-axis were the normal
+  CGLA::Vec3f _normal(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
+
+  // Rotate from z-axis to actual normal and return
+  rotate_to_normal(normal, _normal);
+  return _normal;
+}
+\end{lstlisting}
