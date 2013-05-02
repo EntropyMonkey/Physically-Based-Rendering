@@ -1,0 +1,144 @@
+ \section{Report Exercise 3}
+ 
+ Implemented:
+ \begin{itemize}
+	\item{Transparent shader}
+	\item{Mirror shader}
+	\item{Metal shader}
+	\item{Russian Roulette}
+	\item{fresnel equations for dielectric materials and conductors}
+ \end{itemize}
+ 
+ Relevant figures: \ref{fig:spherestransparentmirror}, \ref{fig:transparentelephants}, \ref{fig:transparentelephantsruss}, \ref{fig:bunnyelephant.png}. Relevant listings: \ref{lst:transparent::split_shade}, and \ref{lst:transparent::shade}.
+ 
+ \begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week3/2mirror.png}
+		\caption{Two perfect mirror spheres inside of the Cornell Box (using the sunsky lighting).}
+		\label{fig:2mirror}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week3/mirrorglass.png}
+		\caption{A mirror and a glass sphere (using default lighting).}
+	\end{subfigure}
+	
+	\caption{Two spheres with different shaders.}
+	\label{fig:spherestransparentmirror}
+ \end{figure}
+ 
+ \begin{figure}[h]
+	\centering
+	
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week3/elephant_1_9rpp.png}
+		\caption{Transparent elephant with cutoff of 1.}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week3/elephant_2_9rpp.png}
+		\caption{Transparent elephant with cutoff of 2.}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week3/elephant_10_9rpp.png}
+		\caption{Transparent elephant with cutoff of 10.}
+	\end{subfigure}
+	
+	\caption{Transparent elephant with different cutoff depths. All pictures used 9 rays per pixel.}
+	\label{fig:transparentelephants}
+ \end{figure}
+ 
+ \begin{figure}[h]
+	\centering
+	
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week3/elephant_1_russ.png}
+		\caption{Transparent elephant with cutoff of 1, russian roulette.}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week3/elephant_2_russ.png}
+		\caption{Transparent elephant with cutoff of 2, russian roulette.}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week3/elephant_10_russ.png}
+		\caption{Transparent elephant with cutoff of 10, russian roulette.}
+	\end{subfigure}
+	
+	\caption{Transparent elephant with different cutoff dephts, using russian roulette. 9 rays per pixel}
+	\label{fig:transparentelephantsruss}
+\end{figure}
+
+\newpage
+\begin{lstlisting}[language=C++,caption=Transparent::shade,label=lst:transparent::shade]
+Vec3f Transparent::shade(Ray& r, bool emit) const
+{  
+  Vec3f radiance = Vec3f(0.0f);
+
+  if (r.trace_depth < splits)
+  {
+    radiance = split_shade(r, emit);
+  }
+  else if (r.trace_depth < max_depth)
+  {
+    // refraction
+    Ray refracted;
+    double fresnelR;
+    tracer->trace_refracted(r, refracted, fresnelR); // fresnelR => use as step probability
+
+    // russian roulette for reflections
+    float rand = randomizer.mt_random();
+
+    // 1st cond. -> russian roulette with fresnelR => pdf, 2nd cond. -> eliminating rays following surface
+    if (rand <= fresnelR && fresnelR > 0.001)
+    {
+      // reflect
+      Ray reflected;
+      tracer->trace_reflected(r, reflected);
+      radiance = shade_new_ray(reflected); // * fresnelR / fresnelR; // divide by fresnelR, since fresnelR is used as the step probability
+    }
+    // if not reflecting, take refraction
+    else if (1 - fresnelR > 0.001)
+    {
+      radiance = shade_new_ray(refracted); // * (1 - fresnelR) / (1 - fresnelR);
+    }
+  }
+
+  return radiance;
+}
+\end{lstlisting}
+
+\newpage
+\begin{lstlisting}[language=C++,caption=Transparent::split\_shade,label=lst:transparent::split_shade]
+Vec3f Transparent::split_shade(Ray& r, bool emit) const
+{
+  Vec3f radiance(0.0f);
+
+  if (r.trace_depth < splits)
+  {
+    Ray refracted;
+    double fresnelR;
+    tracer->trace_refracted(r, refracted, fresnelR);
+
+    if (1 - fresnelR > 0.001)
+      radiance += shade_new_ray(refracted) * (1.0f - fresnelR);
+
+    // eliminate rays following the surface
+    if (fresnelR > 0.001)
+    {
+      Ray reflected;
+      tracer->trace_reflected(r, reflected);
+      radiance += shade_new_ray(reflected) * fresnelR;
+    }
+  }
+
+  return radiance;
+}
+\end{lstlisting}
+
+\begin{figure}[h]
+	\centering
+	
+	\includegraphics[width=\textwidth]{week3/bunny_el_9rpp.png}
+	
+	\caption{A silver bunny and a transparent elephant, using russian roulette, 9 rays per pixel.}
+	\label{fig:bunnyelephant.png}
+\end{figure}

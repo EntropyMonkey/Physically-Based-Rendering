@@ -1,0 +1,146 @@
+ \section{Report Exercise 1}
+
+\begin{itemize}
+\item{Implemented a directional light with shadows}
+\item{Implemented an area light with shadows}
+\end{itemize}
+
+Relevant pictures: figures \ref{fig:shadows}, and \ref{fig:arealight}.
+Relevant listings: \ref{lst:directional}, \ref{lst:lambertian}, and \ref{lst:arealight}.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/bunny_noshadows.png}
+		\caption{Without shadows: ~5s}
+		\label{fig:bunnynoshadows}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/bunny_shadowed.png}
+		\caption{With shadows: ~8s}
+		\label{fig:bunnyshadowed}
+	\end{subfigure}
+	\caption{Bunny.obj, Tris: 69451, 36 samples, 1 directional light, Lambertian shader}
+	\label{fig:shadows}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/arealight_noshadows.png}
+		\caption{Without shadows: 0.3s}
+		\label{fig:arealightnoshadows}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{week1/arealight_shadows.png}
+		\caption{With shadows: 0.5s}
+		\label{fig:arealightshadows}
+	\end{subfigure}
+	\caption{Cornellbox.obj and CornellBlocks.obj, Tris: 36, 4 samples, 1 area light, Lambertian shaders}
+	\label{fig:arealight}
+\end{figure}
+
+\newpage
+\begin{lstlisting}[language=C++,caption=Directional.cpp,label=lst:directional]
+bool Directional::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+{
+  dir = -light_dir;
+  L = emission;
+
+  // test for shadow
+  Ray shadowRay(pos, -light_dir);
+  bool inShadow = false;
+
+  if (shadows)
+    inShadow = tracer->trace(shadowRay);
+
+  return !inShadow;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++,caption=Lambertian.cpp,label=lst:lambertian]
+Vec3f Lambertian::shade(Ray& r, bool emit) const
+{
+  Vec3f rho_d = get_diffuse(r);
+  Vec3f result(0.0f);
+  
+  // temp light direction and radiance
+  Vec3f lightDirection, radiance;
+  for (std::vector<Light*>::const_iterator it = lights.begin(); it != lights.end(); it++)
+  {
+    if ((*it)->sample(r.hit_pos, lightDirection, radiance))
+    {
+      // output of Lambertian BRDF
+      Vec3f f = rho_d * M_1_PIf;
+      
+      // directional light radiance
+      // f - scattered light radiance, radiance - current light radiance, last term: cosine cut off at 0
+      result += f * radiance * std::max(dot(r.hit_normal, lightDirection), 0.0f);
+    }
+  }
+
+  return result + Emission::shade(r, emit);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++,caption=AreaLight.cpp,label=lst:arealight]
+bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+{  
+  // Get geometry info
+  const IndexedFaceSet& geometry = mesh->geometry;
+	const IndexedFaceSet& normals = mesh->normals;
+
+  // averaged light position
+  Vec3f lightPosition = Vec3f(0.0f);
+  // averaged normals
+  Vec3f lightNormal = Vec3f(0.0f);
+  // emission summed up from all faces
+  Vec3f emission = Vec3f(0.0f);
+
+  // iterate over all faces
+  for (int i = 0; i < geometry.no_faces(); i++)
+  {
+    // get the center of the face
+    Vec3i face = geometry.face(i);
+    Vec3f v0 = geometry.vertex(face[0]);
+    Vec3f v1 = geometry.vertex(face[1]);
+    Vec3f v2 = geometry.vertex(face[2]);
+    Vec3f faceCenter = v0 + (v1 - v0 + v2 - v0) * 0.5f;
+    
+    // combine light position
+    lightPosition += faceCenter;
+
+    // average normals
+    lightNormal += (normals.vertex(face[0]) + normals.vertex(face[1]) + normals.vertex(face[2])) / 3;
+
+    // add emission
+    emission += mesh->face_areas[i] * get_emission(i);
+  }
+
+  // average light position
+  lightPosition /= geometry.no_faces();
+
+  lightNormal.normalize();
+  
+  // get light direction and distance to light
+  Vec3f lightDirection = lightPosition - pos;
+  float lightDistance = length(lightDirection);
+
+  // set area light direction, normalize
+  dir = lightDirection / lightDistance;
+
+  // set radiance
+  L = emission * std::max(dot(-dir, lightNormal), 0.0f) / (lightDistance * lightDistance);
+
+  // trace for shadows
+  bool inShadow = false;
+  if (shadows)
+  {
+    Ray shadowRay(pos, dir);
+    shadowRay.tmax = lightDistance - 0.1111f;
+    inShadow = tracer->trace(shadowRay);
+  }
+
+  return !inShadow;
+}
+\end{lstlisting}

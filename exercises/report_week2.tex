@@ -1,0 +1,94 @@
+ \section{Report Exercise 2}
+
+The input parameters for the sun sky light are theta, and phi, together creating the solar position, and the turbidity (how much light is scattered due to dirt in the atmosphere, using empirical values - Preetham). Using Preetham's paper, theta and phi are calculated from the latitude, declination, julian day of the year and the time of the day, as well as some constants from Preetham's paper. The code for this can be found in listing \ref{lst:renderengine::init_tracer}.
+
+The model used for calculating the sun's intensity is calculated as shown in listing \ref{lst:preethamsunsky::sample}. The sun covers a solid angle of 2$\pi$ degrees$^2$ ($\Rightarrow$ the whole hemisphere).
+\\
+\\
+Relevant figure: \ref{fig:sunlight}. Relevant listings: \ref{lst:renderengine::init_tracer}, and \ref{lst:preethamsunsky::sample}.
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_7.png}
+		\caption{7am}
+		\label{fig:skylight7}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_9.png}
+		\caption{9am}
+		\label{fig:skylight9}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_11.png}
+		\caption{11am}
+		\label{fig:skylight11}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_13.png}
+		\caption{1pm}
+		\label{fig:skylight13}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_15.png}
+		\caption{3pm}
+		\label{fig:skylight15}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_17.png}
+		\caption{5pm}
+		\label{fig:skylight17}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{week2/2/bunny_19.png}
+		\caption{9pm}
+		\label{fig:skylight19}
+	\end{subfigure}
+	\caption{Bunny.obj and plane, Tris: 70.000, 1 sample, 1 skylight, Lambertian shaders $\Rightarrow$ approx. 3s per picture}
+	\label{fig:sunlight}
+\end{figure}
+
+\newpage
+\begin{lstlisting}[language=C++,caption=RenderEngine::init\_tracer(),label=lst:renderengine::init_tracer]
+if(use_sun_and_sky)
+  {
+    // Use the Julian date (day_of_year), the solar time (time_of_day), the latitude (latitude),
+    // and the angle with South (angle_with_south) to find the direction toward the sun (sun_dir).
+
+    // hard coded numbers are from Preetham et al.'s A Practical Analytical Model for Daylight, SIGGRAPH 1999
+    float declination = 0.4093 * sin(2 * M_PIf * (day_of_year - 81) / 368);
+    float theta = M_PIf * 0.5f - asin(sin(latitude) * sin(declination) - 
+      cos(latitude) * cos(declination) * cos(M_PIf * time_of_day / 12));
+    float phi = atan(-(cos(declination) * sin(M_PIf * time_of_day / 12)) / 
+      (cos(latitude) * sin(declination) - sin(latitude) * cos(declination) * cos(M_PIf * time_of_day / 12)));
+
+    sun_sky.setSunTheta(theta);
+    sun_sky.setSunPhi(phi);
+    sun_sky.setTurbidity(turbidity);
+    sun_sky.init();
+    tracer.set_background(&sun_sky);
+  }
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++,caption=PreethamSunSky::sample(..),label=lst:preethamsunsky::sample]
+bool PreethamSunSky::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
+{
+  dir = const_cast<PreethamSunSky*>(this)->getSunDir();
+
+  float area = 1;
+  float solid_angle = 2 * M_PI;
+  float cos_theta = dot(Vec3f(0, 1, 0), dir);
+
+  // * 0.00001f to convert to the right unit (cd/m^2)
+  L = const_cast<PreethamSunSky*>(this)->sunColor() / (area * solid_angle * cos_theta) * 0.00001f;
+
+  // test for shadow
+  Ray shadowRay(pos, dir);
+  bool inShadow = false;
+
+  if (shadows)
+    inShadow = tracer->trace(shadowRay);
+
+  return !inShadow;
+}
+\end{lstlisting}
