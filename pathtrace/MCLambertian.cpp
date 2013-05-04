@@ -17,7 +17,7 @@ Vec3f MCLambertian::shade(Ray& r, bool emit) const
 
   Vec3f rho_d = get_diffuse(r);
   double luminance = get_luminance(rho_d);
-  Vec3f result = Lambertian::shade(r, emit);
+  Vec3f result(.0f);
   
   // Implement Monte Carlo path tracing for Lambertian surfaces here.
   //
@@ -36,6 +36,26 @@ Vec3f MCLambertian::shade(Ray& r, bool emit) const
   //       surface normal according to the function sample_cosine_weighted(...).
   //       (b) Use the function shade_new_ray(...) to pass the newly traced ray to
   //       the shader for the surface it hit.
+  
+  
+  if (r.trace_depth < 1)
+  {
+    result = Lambertian::shade(r, emit);
+  }
+
+  float rand = mt_random();
+  // importance sample diffuse reflection
+  float y = 0.2989 * rho_d[0] + 0.5866 * rho_d[1] + 0.1145 * rho_d[2];
+
+  if (rand > y)
+  {
+    Ray hR;
+    for (int sample = 0; sample < samples; sample++)
+    {
+      tracer->trace_cosine_weighted(r, hR);
+      result += shade_new_ray(hR);
+    }
+  }
 
   return result;
 }
