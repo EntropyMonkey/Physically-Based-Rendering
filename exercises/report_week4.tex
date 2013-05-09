@@ -108,7 +108,7 @@ Relevant figures: \ref{fig:comparehardsoftambient}, \ref{fig:comparedirectambien
  \end{figure}
  
  \newpage
- \begin{lstlisting}[language=C++,caption=AreaLight::sample,label=lst:arealight::sample]
+ \begin{lstlisting}[language=C++,caption=AreaLight::sample,label=lst:arealight::sample,firstnumber=18]
  bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 {
   // this method uses monte carlo integration to create soft shadows
@@ -173,7 +173,7 @@ Relevant figures: \ref{fig:comparehardsoftambient}, \ref{fig:comparedirectambien
  \end{lstlisting}
  
  \newpage
- \begin{lstlisting}[language=C++,caption=Ambient::shade,label=lst:ambient::shade]
+ \begin{lstlisting}[language=C++,caption=Ambient::shade,label=lst:ambient::shade,firstnumber=12]
  Vec3f Ambient::shade(Ray& r, bool emit) const
 { 
   Vec3f rho_d = get_diffuse(r);

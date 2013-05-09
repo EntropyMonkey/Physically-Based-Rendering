@@ -49,7 +49,7 @@ Relevant figure: \ref{fig:sunlight}. Relevant listings: \ref{lst:renderengine::i
 \end{figure}
 
 \newpage
-\begin{lstlisting}[language=C++,caption=RenderEngine::init\_tracer(),label=lst:renderengine::init_tracer]
+\begin{lstlisting}[language=C++,caption=RenderEngine::init\_tracer(),label=lst:renderengine::init_tracer,firstnumber=240]
 if(use_sun_and_sky)
   {
     // Use the Julian date (day_of_year), the solar time (time_of_day), the latitude (latitude),
@@ -70,7 +70,7 @@ if(use_sun_and_sky)
   }
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++,caption=PreethamSunSky::sample(..),label=lst:preethamsunsky::sample]
+\begin{lstlisting}[language=C++,caption=PreethamSunSky::sample(..),label=lst:preethamsunsky::sample,firstnumber=23]
 bool PreethamSunSky::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 {
   dir = const_cast<PreethamSunSky*>(this)->getSunDir();

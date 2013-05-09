@@ -41,7 +41,7 @@ Relevant listings: \ref{lst:directional}, \ref{lst:lambertian}, and \ref{lst:are
 \end{figure}
 
 \newpage
-\begin{lstlisting}[language=C++,caption=Directional.cpp,label=lst:directional]
+\begin{lstlisting}[language=C++,caption=Directional.cpp,label=lst:directional,firstnumber=15]
 bool Directional::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 {
   dir = -light_dir;
@@ -58,7 +58,7 @@ bool Directional::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 }
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++,caption=Lambertian.cpp,label=lst:lambertian]
+\begin{lstlisting}[language=C++,caption=Lambertian.cpp,label=lst:lambertian,firstnumber=16]
 Vec3f Lambertian::shade(Ray& r, bool emit) const
 {
   Vec3f rho_d = get_diffuse(r);
@@ -83,7 +83,7 @@ Vec3f Lambertian::shade(Ray& r, bool emit) const
 }
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++,caption=AreaLight.cpp,label=lst:arealight]
+\begin{lstlisting}[language=C++,caption=AreaLight.cpp,label=lst:arealight, firstnumber=18]
 bool AreaLight::sample(const Vec3f& pos, Vec3f& dir, Vec3f& L) const
 {  
   // Get geometry info
