@@ -69,8 +69,8 @@ RenderEngine::RenderEngine()
     scene(&cam),
     tracer(resx, resy, &scene, 100000),                        // Maximum number of photons in map
     max_to_trace(500000),                                      // Maximum number of photons to trace
-    caustics_particles(0),                                     // Desired number of caustics photons
-    global_particles(0),                                       // Desired number of global particles
+    caustics_particles(500),                                     // Desired number of caustics photons
+    global_particles(500),                                       // Desired number of global particles
     caustics_photons_in_estimate(250),                         // Number of nearest neighbors in caustics estimates
     global_photons_in_estimate(1000),                          // Number of nearest neighbors in global estimates
     look_up_radius(1.0e3f),                                    // Should be large for kth nearest neighbor photon mapping

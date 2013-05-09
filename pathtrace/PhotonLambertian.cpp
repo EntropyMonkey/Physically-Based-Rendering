@@ -25,7 +25,7 @@ Vec3f PhotonLambertian::shade(Ray& r, bool emit) const
   //
   // Relevant data fields that are available (see PhotonLambertian.h, 
   // PhotonCaustics.h, and above):
-  // rho_d     (difuse reflectance of the material)
+  // rho_d     (diffuse reflectance of the material)
   // tracer    (pointer to particle tracer)
   // max_dist  (maximum radius of radiance estimate)
   // photons   (maximum number of photons to be included in radiance estimate)
@@ -33,6 +33,8 @@ Vec3f PhotonLambertian::shade(Ray& r, bool emit) const
   // Hint: Use the function tracer->global_irradiance(...) to do an
   //       irradiance estimate using the photon map. This is not the 
   //       same as a radiance estimate.
+
+
 
   return result + Emission::shade(r, !gather);
 }

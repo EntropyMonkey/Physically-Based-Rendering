@@ -207,12 +207,58 @@ bool AreaLight::emit(Ray& r, Vec3f& Phi) const
 	const float no_of_faces = geometry.no_faces();
 
   // Sample ray origin and direction
- 
-  // Trace ray
+  // get random triangle
+  int triangleIndex = randomizer.mt_random_int32() % geometry.no_faces();
   
-  // If a surface was hit, compute Phi and return true
+  // get index for vertices of triangle
+  Vec3i vertexIndex = geometry.face(triangleIndex);
+  // get index for normals of triangle
+  Vec3i normalIndex = normals.face(triangleIndex);
 
-  return false;
+  // get random position on triangle
+  // ref: http://mathworld.wolfram.com/TrianglePointPicking.html
+  float sqrt_e1 = sqrt(randomizer.mt_random());
+  float e2 = randomizer.mt_random();
+
+  // sample barycentric coordinates
+  float u = 1 - sqrt_e1;
+  float v = (1 - e2) * sqrt_e1;
+  float w = e2 * sqrt_e1;
+  
+  // linear interpolation of vertices and normals, to get a point on the triangle and the according normal
+  Vec3f lightPosition = Vec3f(0.0f);
+  Vec3f lightNormal = Vec3f(0.0f);
+  
+  Vec3f uvw = Vec3f(u, v, w);
+  for (int i=0; i<3; i++)
+  {
+    lightPosition += geometry.vertex(vertexIndex[i]) * uvw[i];
+    lightNormal += normals.vertex(normalIndex[i]) * uvw[i];
+  }
+  lightNormal.normalize();
+  
+  // get light direction and distance to light
+  //Vec3f lightDirection = lightPosition - r.origin;
+  //float lightDistance = length(lightDirection);
+
+  // set area light direction
+  //r.direction = lightDirection / lightDistance;
+  r.origin = lightPosition;
+  r.direction = sample_cosine_weighted(lightNormal);
+
+  // Trace ray
+  bool hit = tracer->trace(r);
+
+  // If a surface was hit, compute Phi and return true
+  if (hit)
+  {
+    Phi = get_emission(triangleIndex) * M_PI * mesh->face_areas[triangleIndex];
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 Vec3f AreaLight::get_emission(size_t triangle_id) const
