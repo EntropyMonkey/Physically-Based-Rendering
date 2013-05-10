@@ -30,3 +30,4 @@ realtime/Debug
 *.suo
 *.sdf
 *.opensdf
+/pathtrace/*.prt
